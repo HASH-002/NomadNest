@@ -49,7 +49,7 @@ router.put('/updatePlace', async (req, res) => {
     });
 });
 
-router.get('/getAllPlaces', (req, res) => {
+router.get('/get-user-places', (req, res) => {
     const { token } = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, user) => {
         const { id } = user;
