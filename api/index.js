@@ -1,6 +1,7 @@
 var authRoute = require('./routes/auth');
 var uploadRoute = require('./routes/upload');
 var placeRoute = require('./routes/place');
+var bookingRoute = require('./routes/booking');
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -27,5 +28,6 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
 app.use('/auth', authRoute);
 app.use('/upload', uploadRoute);
 app.use('/place', placeRoute);
+app.use('/booking', bookingRoute);
 
 app.listen(4000);

@@ -49,6 +49,10 @@ router.put('/updatePlace', async (req, res) => {
     });
 });
 
+router.get('/get-all-places', async (req, res) => {
+    res.json(await PlaceModel.find());
+});
+
 router.get('/get-user-places', (req, res) => {
     const { token } = req.cookies;
     jwt.verify(token, jwtSecret, {}, async (err, user) => {
@@ -57,6 +61,7 @@ router.get('/get-user-places', (req, res) => {
     });
 });
 
+// put this route at last to get away from the error
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     res.json(await PlaceModel.findById(id));
