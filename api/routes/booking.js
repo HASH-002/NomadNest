@@ -20,4 +20,10 @@ router.get('/get-user-bookings', verifyAccessToken, async (req, res) => {
     res.json(await BookingModel.find({ user: req.payload.id }).populate('place'));
 });
 
+// put this route at last to get away from the error
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    res.json(await BookingModel.findById(id).populate('place'));
+});
+
 module.exports = router;
