@@ -1,18 +1,15 @@
-const express = require('express');
 const UserModel = require('../models/User');
+const { verifyAccessToken } = require('../middleware/verify_token');
 
+const express = require('express');
 const bcrypt = require('bcryptjs');
+
 const jwt = require('jsonwebtoken');
 const jwtSecret = 'ninwnjoawndinidnwind';
-
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 
 var router = express.Router();
-
-router.get('/test', (req, res) => {
-    res.json('test ok');
-});
 
 router.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
@@ -49,17 +46,9 @@ router.post('/login', async (req, res) => {
     else res.status(404).json('not found');
 });
 
-router.get('/profile', (req, res) => {
-    const { token } = req.cookies;
-    if (token) {
-        jwt.verify(token, jwtSecret, {}, async (err, user) => {
-            if (err) throw err;
-            const { name, email, _id } = await UserModel.findById(user.id);
-            res.json({ name, email, _id });
-        });
-    } else {
-        res.json(null);
-    }
+router.get('/profile', verifyAccessToken, async (req, res) => {
+    const { name, email, _id } = await UserModel.findById(req.payload.id);
+    res.json({ name, email, _id });
 });
 
 router.post('/logout', (req, res) => {
